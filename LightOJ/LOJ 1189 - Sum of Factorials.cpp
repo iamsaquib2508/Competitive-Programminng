@@ -85,7 +85,7 @@ int main(){
                 print+=('+'+getcar(ans[i])+'!');
             }
         }
-        cout << "Case " << cc++ << ": " << print << endl;
+        cout << "Case " << cc++ << ": " << print <<'\n';
         ans.clear();
     }
 }

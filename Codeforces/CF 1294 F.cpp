@@ -28,97 +28,115 @@ using namespace std;
 
 /*  ***************************           DONATE BLOOD, SAVE LIFE!               ********************************  */
 
-vector<int> best, v[200005], p;
-int n;
+vector<int> path, v[200005];
 int a, b, c;
-int got;
+int ans, bestdepth;
+bool vis[200005];
 
-void dfs2(int s, int par=-1, int depth=0)
-{
-   int sz=v[s].size(), i, u;
-   if(sz==1 && v[s][0]==par)
-   {
-       //leaf
-       if(best.empty() || depth>best[0])
-       {
-           best.clear();
-           best.pb(depth);
-           best.pb(s);
-       }
-       return;
-   }
-   for(int u: v[s])
-   {
-       if(u!=par)
-           dfs2(u,s,depth+1);
-   }
-   best.pb(s);
+void dfs(int s, int par=-1, int depth=0){
+    int sz=v[s].size();
+    vis[s]=1;
+    if(sz==1 && par==v[s][0]){
+        if(depth > bestdepth){
+            bestdepth = depth;
+            a = s;
+        }
+    }
+    else{
+        for(int u: v[s]){
+            if(u!=par && !vis[u]){
+                dfs(u,s,depth+1);
+            }
+        }
+    }
 }
 
-void dfs3(int s, int id)
-{
-   int sz=v[s].size(), i, u;
+bool dfspath(int s, int par=-1){
+    if(s==b){
+        return true;
+    }
+    int sz=v[s].size();
+    vis[s]=1;
 
-   for(int u:v[s])
-   {
-       if( (u!=p[id-1] && u!=p[id+1]) )
-       {
-           dfs2(u,s,1);
-           if(best.size()>got)
-           {
-               got=best.size(); c=best[1];
-           }
-       }
-   }
-   return;
+    if(sz==1 && par==v[s][0]){
+        return false;
+    }
+    else{
+        for(int u: v[s]){
+            if(u!=par && !vis[u]){
+                bool found = dfspath(u,s);
+                if( found ){
+                    path.pb(s);
+                    return true;
+                }
+            }
+        }
+    }
+    //never comes here
+    return false;
 }
 
-void print(std::vector<int> pp) {for(int aa:pp) cout << aa << ' '; cout << endl;}
+void bfs(){
+    queue<int> q;
+    int dis[200005];
+    mm(vis,0);
+    for(int aa:path){
+        q.push(aa); dis[aa]=0;
+        vis[aa]=1;
+    }
+
+    int s;
+    vis[a]=1; vis[b]=1;
+    while(!q.empty()){
+        s=q.front(); q.pop();
+
+        for(int u: v[s]){
+            if(!vis[u]){
+                vis[u]=1;
+                dis[u]=dis[s]+1;
+                q.push(u);
+            }
+        }
+    }
+    c=s;
+    //cout << dis[c] << " disc\n";
+    ans += dis[c];
+}
 
 int main()
 {
-   ios_base::sync_with_stdio(0);
-   cin.tie(NULL);
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL);
+    int n;
+    while(cin >> n){
+        int i, u, uu, sz;
+        ffr(i,0,200005) v[i].clear();
 
-   while(cin >> n)
-   {
-       best.clear();
-       int i, u, uu, sz;
-       ffr(i,0,200005) v[i].clear();
-       got=0;
+        ffr(i,1,n)
+        {
+            cin >> u >> uu;
+            v[u].pb(uu);
+            v[uu].pb(u);
+        }
+        mm(vis,0); bestdepth = 0; dfs(1); b=a;
+        mm(vis,0); bestdepth = 0; dfs(b);
 
-       ffr(i,1,n)
-       {
-           cin >> u >> uu;
-           v[u].pb(uu);
-           v[uu].pb(u);
-       }
-       best.clear();
-       best.pb(0);
-       dfs2(1);  //edgelen  a ... 1
-       a=best[1];
+        if(bestdepth==n-1){
+           //any c
+           ans = n-1;
+           ffrr(i,1,n)
+               if(i!=a && i!=b) {c=i; break;}
+        }
+        else{
+            path.clear();
+            mm(vis,0); dfspath(a);
+            path.pop_back();
+            ans = bestdepth;
+            bfs();
+        }
+        cout << ans << endl;
+        cout << a << ' ' << b << ' ' << c << endl;
+    }
 
-       best.clear();
-       best.pb(0);
-       dfs2(a);  //edl  b ... a
-       b=best[1];
-       //print(best);
-
-       p=best;
-       sz=best.size()-1;
-       //assert(best[sz]==a);
-
-       best.clear();
-       best.pb(0);
-
-       ffr(i,2,sz)
-       {
-           dfs3(p[i],i);
-       }
-       if(got==0) {got=1; c=p[sz-1];}
-       cout << sz-1+got-1 << endl;
-       cout << a << ' ' << b << ' ' << c << endl;
-   }
-
-   return 0;
+    return 0;
 }

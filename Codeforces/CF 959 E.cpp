@@ -30,41 +30,62 @@ using namespace std;
 /*  ***************************           DONATE BLOOD, SAVE LIFE!               ********************************  */
 
 
+//
+//
+// int main()
+// {
+//     ll n, ans, arl, num;
+//     while(1){
+//     //idk wtf i did here
+//
+//     cin >> n;
+//     ans=0;
+//     arl=2;
+//     while(1)
+//     {
+//         //cout << arl << " ";
+//         num=n/arl;
+//         if((n-num*arl)>(arl/2))
+//         {
+//             num++; cout << "special " << n << endl;
+//         }
+//         ans+=(arl/2*num);
+//         if(ans>100000000000000) cout << "danger\n";
+//         //cout << ans << endl;
+//         /*if(arl+1==n)
+//         {
+//             ans+=(n-1); break;
+//         }*/
+//         arl+=arl;
+//         if(arl>n)
+//         {
+//             break;
+//         }
+//     }
+//     if(n+n!=arl)
+//     ans+=arl/2;
+//     cout << ans << endl;
+// }
+//
+//     return 0;
+// }
 
-
-int main()
-{
-    ll n, ans, arl, num;
-    while(1){
-
-    cin >> n;
-    ans=0;
-    arl=2;
-    while(1)
-    {
-        //cout << arl << " ";
-        num=n/arl;
-        if((n-num*arl)>(arl/2))  
-        {
-            num++; cout << "special " << n << endl;
+int main(){
+    ll n;
+    while(cin >> n){
+        //101...1 will be removed by 101...0, with 1 cost.
+        //then all the remainings will be ...0. ignore the last bit, and repeat.
+        n--;
+        ll cost, temp, ans=0, cur=n;
+        cost=1;
+        while(cur){
+            //cout << cur << " cur\n";
+            
+            temp=(cur>>1)+cur&1;
+            ans+=(temp*cost);
+            cost<<=1;
+            cur>>=1;
         }
-        ans+=(arl/2*num);
-        if(ans>100000000000000) cout << "danger\n";
-        //cout << ans << endl;
-        /*if(arl+1==n)
-        {
-            ans+=(n-1); break;
-        }*/
-        arl+=arl;
-        if(arl>n)
-        {
-            break;
-        }
+        cout << ans << endl;
     }
-    if(n+n!=arl)
-    ans+=arl/2;
-    cout << ans << endl;
-}
-    
-    return 0;
 }

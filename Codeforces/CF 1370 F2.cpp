@@ -23,7 +23,7 @@ int maxx(int a, int b){
 }
 
 vector<int> v[1003], q;
-int firstVertex, d1, minimumD, closestVertexOutside, d2, extra, node1, d3, node2, d4;
+int firstVertex, minimumD, closestVertexOutside, d2, extra, node1, d3, node2, d4;
 int farthestDfromV1;
 bool vis[1003];
 
@@ -42,7 +42,7 @@ void dfs0(int s, int p, int dis){
     return ;
 }
 
-void dfs1(int s, int p, int dis){
+void dfs1(int s, int p, int dis, int d1){
     vis[s]=1;
     if(dis==d1){
         q.pb(s);
@@ -53,14 +53,14 @@ void dfs1(int s, int p, int dis){
     }
     for(int vv:v[s]){
         if(vv!=p){
-            dfs1(vv, s, dis+1);
+            dfs1(vv, s, dis+1, d1);
             //?
         }
     }
     return;
 }
 
-bool dfs2(int s, int p, int dis){
+bool dfs2(int s, int p, int dis, int d1){
     vis[s]=1;
     if(dis==d1){
         if(s==closestVertexOutside){
@@ -75,7 +75,7 @@ bool dfs2(int s, int p, int dis){
     bool got;
     for(int vv:v[s]){
         if(vv!=p){
-            got=dfs2(vv, s, dis+1);
+            got=dfs2(vv, s, dis+1, d1);
             if(got){
                 q.pb(s);
                 return 1;
@@ -105,11 +105,11 @@ int main(){
         mm(vis,0);
         dfs0(firstVertex,-1,0);
 
-        d1=minn(farthestDfromV1,minimumD);
+        int d1=minn(farthestDfromV1,minimumD);
         //cout << d1 << endl;
         q.clear();
         mm(vis,0);
-        dfs1(firstVertex,-1,0);
+        dfs1(firstVertex,-1,0, d1);
         cout << "? " << q.size();
         for(int aa:q) cout << ' ' << aa; cout << endl;
         cin >> closestVertexOutside >> d2;
@@ -117,13 +117,13 @@ int main(){
         extra = (d2-minimumD)/2;
         q.clear();
         mm(vis,0);
-        dfs2(firstVertex, -1, 0); //look closestVertexOutside at extra slack
+        dfs2(firstVertex, -1, 0, d1); //look closestVertexOutside at extra slack
         node1 = q[extra];
         //cout << "? 1 " << node1 << endl;
         q.clear();
         mm(vis,0);
         d1=minimumD;
-        dfs1(node1,-1,0);
+        dfs1(node1,-1,0,d1);
         cout << "? " << q.size();
         for(int aa:q) cout << ' ' << aa; cout << endl;
         cin >> node2 >> d4;
@@ -137,7 +137,6 @@ int main(){
 }
 
 /*
-
 
 I need a help with a solution that I have of problem 1370F2 - The Hidden Pair (Hard Version). I understand the editorial and I know how it works. But I have a solution of my own, which I don't know why should fail. The idea is simple, and quite similar to the one in the editorial.
 
