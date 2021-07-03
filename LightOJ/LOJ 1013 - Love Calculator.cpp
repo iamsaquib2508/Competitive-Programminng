@@ -56,7 +56,7 @@ node call(ll i, ll j)
         node temp=call(i,j+1);
         node temp2=call(i+1,j);
 
-        ans.len=1+min(temp.len,temp2.len);
+        // ans.len=1+min(temp.len,temp2.len);
         if(temp.len==temp2.len)
         {
             ans.len=1+temp.len;

@@ -29,6 +29,12 @@ ll gcd(ll a, ll b){
     if(b==0) return a; return gcd(b, a%b);
 }
 
+ll ans[1000006];
+ll lc[100];
+ll xtra[100];
+
+ll nmax = 100000000000000000;
+
 void fff(){
     ll cur = 2;
     ll lcpast = 1;
@@ -42,30 +48,36 @@ void fff(){
         lc[cur] = lcpast;
         cur++;
     }
+    // cout << cur << endl;
 }
 
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
+    fff();
+    int i;
+    // ffr(i,1,43) cout << lc[i] << ' '; cout << endl;
+    // ffr(i,1,43) cout << xtra[i] << ' '; cout << endl;
+    ll mod = 1000000007;
     int cc=1, tt = 1;
     cin >> tt;
     while(tt--){
-        ll n, a, b;
-        cin >> n >> a >> b;
-        ll poww = 1;
-        if(a > 1)
-        while(poww <= n){
-            ll rem = n - poww;
-            if(rem % b == 0) break;
-            poww *= a;
+        int cur = 2;
+        ll n, lcpast = 1, ans = 0;
+        cin >> n;
+        while(lc[cur - 1] <= n){
+            ll temp = n / lc[cur] * xtra[cur];
+            ll rem = n % lc[cur];
+            temp += rem / lc[cur - 1];
+            temp %= mod;
+            ll tempans = (temp * cur) % mod;
+            ans += tempans;
+            if(ans >= mod) ans -= mod;
+            cur++;
+            // cout << tempans << ' ' << cur << endl;
         }
-        else{
-            ll rem = n - 1;
-            if(rem % b != 0) poww = n + 1;
-        }
-        if(poww <= n) cout << "Yes\n";
-        else cout << "No\n";
+        cout << ans << endl;
     }
     return 0;
 }

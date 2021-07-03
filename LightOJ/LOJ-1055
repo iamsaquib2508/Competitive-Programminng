@@ -1,0 +1,14 @@
+<intclude<bits/stdc++.h>
+
+int main(){
+	int cc=1, tt;
+    cin >> tt;
+    while(tt--){
+    	cin >> n;
+        ffr(i,0,n){
+        	
+        }
+        
+    	cout << "Case " << cc++ << ": " << ans << '\n';
+    }
+}

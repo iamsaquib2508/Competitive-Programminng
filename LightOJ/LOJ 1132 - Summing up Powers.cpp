@@ -132,7 +132,7 @@ int main()
         matrix final = bigMod(mat,N-1);
 
         ull anss=0;
-        ffr(i,0,k+2) {anss+=final.arr[0][i]; }
+        ffr(i,0,k+2) {anss += final.arr[0][i]; }
         //while(anss>=MOD) anss-=MOD;
         printf("Case %d: %lld\n", cc++, modd(anss) );
     }

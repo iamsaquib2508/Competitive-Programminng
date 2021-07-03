@@ -30,34 +30,34 @@ void backbuild(string W)
         {
             back[pos]=back[id];
         }
-        cout << back[pos] << ' ';
+        // cout << back[pos] << ' ';
         pos++, id++;
     }
-    cout << id;
+    // cout << id;
     back[pos]=id; //back[pos]=-1 for non overlapping occurrences
 }
 
 int KMP(string S, string W) //in a, occurrence of b
 {
-    int ss=S.size(), ws=W.size(), j, k;
+    int ss = S.size(), ws = W.size(), j, k;
     backbuild(W);
-    j=0, k=0;
+    j = 0, k = 0;
     vector<int> v;
-    while(j<ss)
+    while(j < ss)
     {
-        if(S[j]==W[k]) //if current match
+        if(S[j] == W[k]) //if current match
         {
             j++; k++; //simply procees
-            if(k==ws) //if full match found
+            if(k == ws) //if full match found
             {
                 v.pb(j-k);
-                k=back[k]; //start from somewhere back
+                k = back[k]; //start from somewhere back
                 //k=0; // for non overlapping occurrences
             }
         }
         else
         {
-            k=back[k];
+            k = back[k];
             if(k<0)
             {
                 j++; k=0;
@@ -76,10 +76,10 @@ int main()
     while(T--)
     {
         cin >> A >> B;
-        cout << "-1 ";
-        backbuild(B);
+        // cout << "-1 ";
+        // backbuild(B);
 
-        //pf("Case %d: %d\n", cc, KMP(A,B));
+        pf("Case %d: %d\n", cc, KMP(A,B));
         cc++;
     }
 }
